@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Dictionary</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #5c67f2;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #434fd1;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .definition {
+      margin: 10px 0;
+    }
+
+    .related-words {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>military dictionary</h1>
+    <input type="text" id="search-input" placeholder="Type a word..." />
+    <button id="search-btn">Search</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    // Dictionary Data
+    const dictionary = [
+      {
+        word: "ablutions",
+        def: "A room or building containing washing facilities and toilets.",
+        rel: ["Bathroom", "Restroom", "Washroom", "Lavatory", "Latrine"],
+      },
+      {
+        word: "accessible",
+        def: "A place, terrain, building, or object that is easy to reach or get into.",
+        rel: ["Reach", "Get", "Through"],
+      },
+      {
+    word: "accountability",
+    def: "The obligation imposed by law or lawful order or regulation on an officer or other person for keeping accurate record of property, documents, or funds.",
+    rel: [""]
+  },
+  {
+    word: "advance guard",
+    def: "Detachment sent ahead of the main force to ensure its uninterrupted advance; to protect the main body against surprise; to facilitate the advance by removing obstacles and repairing roads and bridges; and to cover the deployment of the main body if it is committed to action.",
+    rel: [""]
+  },
+  {
+    word: "adversary",
+    def: "A party acknowledged as potentially hostile to a friendly party and against which the use of force may be envisaged.",
+    rel: [""]
+  },
+  {
+    word: "agency",
+    def: "An organization or individual that collects and/or processes information. Also called collection agency.",
+    rel: ["agent", "intelligence process", "source"]
+  },
+  {
+    word: "agent",
+    def: "One who is authorized or instructed to obtain or to assist in obtaining information for intelligence or counterintelligence purposes.",
+    rel: [""]
+  },
+  {
+    word: "aimpoint",
+    def: "A point associated with a target and assigned for a specific weapon impact.",
+    rel: ["desired point of impact."]
+  },
+  {
+    word: "air assault",
+    def: "The movement of friendly aircraft to engage and destroy enemy forces or to seize and hold key terrain.",
+    rel: [""]
+  },
+  {
+    word: "airborne",
+    def: "In relation to personnel, troops especially trained to effect, following transport by air, an assault debarkation, either by parachuting or touchdown.",
+    rel: [""]
+  },
+  {
+    word: "air born IED",
+    def: "An IED delivered by or canceled in an air-based vehicle.",
+    rel: ["ABIEED"]
+  },
+  {
+    word: "airdrop",
+    def: "The unloading of personnel or materiel from aircraft in flight.",
+    rel: [""]
+  },
+  {
+    word: "airfield",
+    def: "An area prepared for the accommodation (including any buildings, installations, and equipment), landing, and takeoff of aircraft.",
+    rel: [""]
+  },
+  {
+    word: "air interdiction",
+    def: "Air operations conducted to divert, disrupt, delay, or destroy the enemy’s military surface capabilities before it can be brought to bear effectively against friendly forces.",
+    rel: [""]
+  },
+  {
+    word: "air refueling",
+    def: "The refueling of an aircraft in flight by another aircraft.",
+    rel: [""]
+  },
+  {
+    word: "air sovereignty",
+    def: "A nation’s inherent right to exercise absolute control and authority over the airspace above its territory.",
+    rel: [""]
+  },
+  {
+    word: "airspace control",
+    def: "Capabilities and procedures used to increase operational effectiveness by promoting the safe, efficient, and flexible use of airspace.",
+    rel: [""]
+  },
+  {
+    word: "air superiority",
+    def: "The degree of control that permits the conduct of its operations at a given time and place without prohibitive interference from air and missile threats.",
+    rel: [""]
+  },
+  {
+    word: "alliance",
+    def: "The relationship that results from a formal agreement between two or more nations for broad, long-term objectives that further the common interests of the members.",
+    rel: ["multinational"]
+  },
+  {
+    word: "amphibian",
+    def: "A small craft, propelled by propellers and wheels or by air cushions for the purpose of moving on both land and water.",
+    rel: [""]
+  },
+  {
+    word: "anti aircraft IED",
+    def: "An IED primarily intended to damage or destroy aircraft and/or their payload.",
+    rel: [""]
+  },
+  {
+    word: "anti armor IED",
+    def: "An IED that utilizes a directional explosive effect primarily intended to penetrate armored vehicles.",
+    rel: [""]
+  },
+  {
+    word: "anti EOD IED",
+    def: "An IED primarily intended to kill or wound EOD personnel or to counter render safe procedure.",
+    rel: [""]
+  },
+  {
+    word: "anti maritime IED",
+    def: "An IED primarily intended to damage or destroy maritime vessels and/or their payload.",
+    rel: [""]
+  },
+  {
+    word: "antiterrorism",
+    def: "Defensive measures used to reduce the vulnerability of individuals and property to terrorist acts, to include rapid containment by local military and civilian forces.",
+    rel: ["counterterrorism"]
+  },
+  {
+    word: "anti-vehicle land mine",
+    def: "A mine designed to immobilize or destroy a vehicle.",
+    rel: [""]
+  },
+  {
+    word: "apron",
+    def: "A defined area on an airfield intended to accommodate aircraft for purposes of loading or unloading passengers or cargo, refueling, parking, or maintenance.",
+    rel: [""]
+  },
+  {
+    word: "area denial",
+    def: "Action, activity, or capability, usually short-range, designed to limit an enemy force’s freedom of action within an operational area.",
+    rel: [""]
+  },
+  {
+    word: "area of influence",
+    def: "A geographical area wherein a commander is directly capable of influencing operations by maneuver or fire support systems normally under the commander’s command or control.",
+    rel: [""]
+  },
+  {
+    word: "area of interest",
+    def: "That area of concern to the commander, including the area of influence, areas adjacent thereto, and extending into enemy territory.",
+    rel: [""]
+  },
+  {
+    word: "area of operations",
+    def: "An operational area defined by a commander for land and maritime forces that should be large enough to accomplish their missions and protect their forces.",
+    rel: ["AO"]
+  },
+  {
+    word: "area of responsibility",
+    def: "The geographical area associated with a combatant command within which a geographic combatant commander has authority to plan and conduct operations.",
+    rel: ["AOR"]
+  },
+  {
+    word: "area search",
+    def: "Visual reconnaissance of limited or defined areas.",
+    rel: [""]
+  },
+  {
+    word: "arming",
+    def: "As applied to explosives, weapons, and ammunition, the changing from a safe condition to a state of readiness for initiation.",
+    rel: [""]
+  },
+  {
+    word: "assault",
+    def: "To make a short, violent, but well-ordered attack against a local objective, such as a gun emplacement, a fort, or a machine gun nest.",
+    rel: [""]
+  },
+  {
+    word: "assign",
+    def: "To place units or personnel in an organization where such placement is relatively permanent, and/or where such organization controls and administers the units or personnel for the primary function, or greater portion of the functions, of the unit or personnel.",
+    rel: [""]
+  },
+  {
+    word: "assumption",
+    def: "A specific supposition of the operational environment that is assumed to be true, in the absence of positive proof, essential for the continuation of planning.",
+    rel: [""]
+  },
+  {
+    word: "attach",
+    def: "1. The placement of units or personnel in an organization where such placement is relatively temporary. 2. The detailing of individuals to specific functions where such functions are secondary or relatively temporary.",
+    rel: [""]
+  },
+  {
+    word: "attack",
+    def: "The act of offensive operation using weapon against an enemy force to achieve an objective.",
+    rel: ["Raid", "Ambush", "Assault", "Strike", "Aggression"]
+  },
+  {
+    word: "attack position",
+    def: "The last position occupied by the assault echelon before crossing the line of departure.",
+    rel: [""]
+  },
+  {
+    word: "avenue of approach",
+    def: "An air or ground route of an attacking force of a given size leading to its objective or to key terrain in its path.",
+    rel: [""]
+  },
+  {
+    word: "accident",
+    def: "Physical harm or damage as a result of an error in judgment.",
+    rel: ["Disaster", "Catastrophe", "Wreck", "Collision"]
+  },
+  {
+    word: "accommodation",
+    def: "A place for soldiers, NCOs, and officers to stay, live, or work.",
+    rel: ["housing", "home", "tent", "shelter"]
+  },
+  {
+    word: "achieve",
+    def: "To successfully complete task/mission to get a good result, especially by working hard.",
+    rel: ["Succeed", "Make progress", "Accomplish"]
+  },
+  {
+    word: "acting",
+    def: "Someone who does an important job while the usual person is not there, or until a new person is assigned for the job.",
+    rel: ["Stand-in", "Successor"]
+  },
+
+      // Add more entries as needed...
+    ];
+
+    // Elements
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-btn');
+    const resultDiv = document.getElementById('result');
+
+    // Search Function
+    function searchWord() {
+      const query = searchInput.value.trim().toLowerCase();
+      resultDiv.innerHTML = '';
+
+      // Find the word in the dictionary
+      const entry = dictionary.find(item => item.word.toLowerCase() === query);
+
+      if (entry) {
+        // Display the definition and related words
+        resultDiv.innerHTML = `
+          <h2>${entry.word}</h2>
+          <p><strong>Definition:</strong> ${entry.def}</p>
+          ${
+            entry.rel.length > 0
+              ? `<p><strong>Related Words:</strong> ${entry.rel.join(', ')}</p>`
+              : ''
+          }
+        `;
+      } else {
+        resultDiv.innerHTML = `<p>No results found for "${query}".</p>`;
+      }
+    }
+
+    // Event Listener for Search Button
+    searchButton.addEventListener('click', searchWord);
+
+    // Allow pressing "Enter" to search
+    searchInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        searchWord();
+      }
+    });
+  </script>
+</body>
+</html>
