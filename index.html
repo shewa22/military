@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
+      background: linear-gradient(to right, green, yellow, red); /* Gradient from green to yellow to red */
       margin: 0;
       padding: 20px;
       display: flex;
@@ -63,7 +63,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>military dictionary</h1>
+    <h1>Military Dictionary</h1>
     <input type="text" id="search-input" placeholder="Type a word..." />
     <button id="search-btn">Search</button>
     <div id="result"></div>
@@ -72,6 +72,11 @@
   <script>
     // Dictionary Data
     const dictionary = [
+      {
+        word: "ablutions",
+        def: "A room or building containing washing facilities and toilets.",
+        rel: ["Bathroom", "Restroom", "Washroom", "Lavatory", "Latrine"],
+      },
       {
         word: "ablutions",
         def: "A room or building containing washing facilities and toilets.",
@@ -297,7 +302,6 @@
     def: "Someone who does an important job while the usual person is not there, or until a new person is assigned for the job.",
     rel: ["Stand-in", "Successor"]
   },
-
       // Add more entries as needed...
     ];
 
